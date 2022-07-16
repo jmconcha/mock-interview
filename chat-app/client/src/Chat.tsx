@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from './socket';
 
 import Message, { MessageType } from './Message';
+import { flushSync } from 'react-dom';
 
 function Chat() {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -14,30 +15,30 @@ function Chat() {
     let connection = connectionRef.current;
     connection = connect();
 
+    const scrollToLastMessage = () => {
+      lastMessageElementRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
+      });
+    };
+
     connection.on('initial-messages', (msgs: MessageType[]) => {
       console.log('msgs', msgs);
       setMessages(msgs);
     });
+
     connection.on('chat-message', (msg: MessageType) => {
-      setMessages((m: MessageType[]) => [...m, msg]);
+      flushSync(() => {
+        setMessages((m: MessageType[]) => [...m, msg]);
+        scrollToLastMessage();
+      });
     });
 
     return () => {
       connection.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    if (messages.length > 0) {
-      console.log('here', lastMessageElementRef.current);
-
-      lastMessageElementRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end',
-        inline: 'nearest',
-      });
-    }
-  }, [messages]);
 
   const handleClick = () => {
     setToggleColorBlindMode((prevState) => !prevState);
