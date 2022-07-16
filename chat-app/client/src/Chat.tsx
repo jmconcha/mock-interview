@@ -1,18 +1,32 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from './socket';
 
+import Message, { MessageType } from './Message';
+
 function Chat() {
+  const [messages, setMessages] = useState<any>([]);
   const connectionRef = useRef<any>(null);
 
   useEffect(() => {
-    connectionRef.current = connect();
+    let connection = connectionRef.current;
+    connection = connect();
+
+    connection.on('chat-message', (msg: any) => {
+      setMessages(msg);
+    });
 
     return () => {
-      connectionRef.current.disconnect();
+      connection.disconnect();
     };
   }, []);
 
-  return <div>Chat</div>;
+  return (
+    <div className="border-2 border-gray-500 p-4 mt-8 w-1/2">
+      {messages.map((msg: MessageType, index: number) => (
+        <Message key={index} {...msg} />
+      ))}
+    </div>
+  );
 }
 
 export default Chat;
