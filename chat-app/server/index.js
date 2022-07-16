@@ -28,17 +28,18 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   const intervalId = setInterval(() => {
-    randomMessages.push({
+    const newMessage = {
       body: messages[getRandomNumber(0, messages.length)],
       user: {
         name: usernames[getRandomNumber(0, usernames.length)],
         color: colors[getRandomNumber(0, colors.length)],
       },
-    });
+    };
+    randomMessages.push(newMessage);
 
     console.log('messages: ', randomMessages);
 
-    io.emit('chat-message', randomMessages);
+    io.emit('chat-message', newMessage);
   }, 1000);
 
   io.emit('chat-message', randomMessages);
