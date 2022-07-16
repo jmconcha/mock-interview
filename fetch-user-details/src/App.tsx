@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-function App() {
+interface Name {
+  title: string;
+  first: string;
+  last: string;
+}
+
+function getUserFullName(name: Name): string {
+  const { title, first, last } = name;
+
+  return `${title} ${first} ${last}`;
+}
+
+function App(): JSX.Element {
+  const [users, setUsers] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    const apiUrl = `https://randomuser.me/api?page=${currentPage}`;
+
+    const fetchUsers = async () => {
+      const response = await axios.get(apiUrl);
+      setUsers((prevState) => [...prevState, ...response.data.results]);
+    };
+
+    fetchUsers();
+  }, [currentPage]);
+
+  const previousPage = () => setCurrentPage((prevState) => prevState - 1);
+  const nextPage = () => setCurrentPage((prevState) => prevState + 1);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        {users.map((user: any) => (
+          <div key={user.id.value || user.dob.date}>
+            <img src={user.picture.thumbnail} alt="avatar" />
+            <h4>{getUserFullName(user.name)}</h4>
+          </div>
+        ))}
+      </div>
+      <button onClick={previousPage}>Previous Page</button>
+      <button onClick={nextPage}>Next Page</button>
+    </>
   );
 }
 
