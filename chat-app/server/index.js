@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
     io.emit('chat-message', newMessage);
   }, 1000);
 
-  io.emit('chat-message', randomMessages);
+  io.emit('initial-messages', randomMessages);
 
   socket.on('chat-message', (msg) => {
     console.log('message', msg);
