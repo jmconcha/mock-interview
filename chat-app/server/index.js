@@ -3,9 +3,13 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io');
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
-const PORT = process.env.PORT || 8000;
+const PORT = 5000;
 
 io.on('connection', (socket) => {
   console.log('a user connected');
