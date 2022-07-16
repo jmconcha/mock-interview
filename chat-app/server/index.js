@@ -37,6 +37,8 @@ io.on('connection', (socket) => {
     });
 
     console.log('messages: ', randomMessages);
+
+    io.emit('chat-message', randomMessages);
   }, 1000);
 
   io.emit('chat-message', randomMessages);
