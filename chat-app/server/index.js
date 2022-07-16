@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 8000;
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  socket.on('chatMessage', (msg) => {
+  socket.on('chat-message', (msg) => {
     console.log('message', msg);
 
-    io.emit('chatMessage', msg);
+    io.emit('chat-message', msg);
   });
 
   socket.on('disconnect', () => {
