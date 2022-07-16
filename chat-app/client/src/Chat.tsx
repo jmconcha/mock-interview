@@ -5,6 +5,8 @@ import Message, { MessageType } from './Message';
 
 function Chat() {
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [toggleColorBlindMode, setToggleColorBlindMode] =
+    useState<boolean>(false);
   const connectionRef = useRef<any>(null);
 
   useEffect(() => {
@@ -25,10 +27,22 @@ function Chat() {
   }, []);
 
   console.log('here', messages);
+
+  const handleClick = () => {
+    setToggleColorBlindMode((prevState) => !prevState);
+  };
+
   return (
     <div className="border-2 border-gray-500 p-4 mt-8 w-1/2 overflow-scroll">
+      <button
+        onClick={handleClick}
+        className="mb-4 border-b-2 border-transparent hover:border-gray-500"
+      >
+        Toggle Color Blind Mode: {toggleColorBlindMode ? 'OFF' : 'ON'}
+      </button>
+      <hr />
       {messages.map((msg: MessageType, index: number) => (
-        <Message key={index} {...msg} />
+        <Message key={index} {...msg} colorBlindMode={toggleColorBlindMode} />
       ))}
     </div>
   );
