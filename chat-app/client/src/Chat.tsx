@@ -21,7 +21,7 @@ function Chat() {
   }, []);
 
   return (
-    <div className="border-2 border-gray-500 p-4 mt-8 w-1/2">
+    <div className="border-2 border-gray-500 p-4 mt-8 w-1/2 overflow-scroll">
       {messages.map((msg: MessageType, index: number) => (
         <Message key={index} {...msg} />
       ))}
