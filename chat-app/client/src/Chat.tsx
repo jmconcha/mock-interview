@@ -31,7 +31,7 @@ function Chat() {
     connection.on('chat-message', (msg: MessageType) => {
       flushSync(() => {
         setMessages((m: MessageType[]) => [...m, msg]);
-        scrollToLastMessage();
+        // scrollToLastMessage();
       });
     });
 
@@ -45,15 +45,16 @@ function Chat() {
   };
 
   return (
-    <>
-      <button
-        onClick={handleClick}
-        className="mb-4 border-b-2 border-transparent hover:border-gray-500 mt-8"
-      >
-        Toggle Color Blind Mode: {toggleColorBlindMode ? 'OFF' : 'ON'}
-      </button>
-      <hr />
-      <div className="border-2 border-gray-500 p-4 w-1/2 overflow-scroll">
+    <div className="flex flex-col w-1/2 border-2 border-gray-500 mt-8 relative overflow-hidden">
+      <div className="absolute top-0 left-0 p-4">
+        <button
+          onClick={handleClick}
+          className="border-b-2 border-transparent hover:border-gray-500"
+        >
+          Toggle Color Blind Mode: {toggleColorBlindMode ? 'OFF' : 'ON'}
+        </button>
+      </div>
+      <div className="mt-14 overflow-y-auto p-4">
         {messages.map((msg: MessageType, index: number) => {
           if (index === messages.length - 1) {
             return (
@@ -75,7 +76,7 @@ function Chat() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 
