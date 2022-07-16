@@ -44,31 +44,37 @@ function Chat() {
   };
 
   return (
-    <div className="border-2 border-gray-500 p-4 mt-8 w-1/2 overflow-scroll">
+    <>
       <button
         onClick={handleClick}
-        className="mb-4 border-b-2 border-transparent hover:border-gray-500"
+        className="mb-4 border-b-2 border-transparent hover:border-gray-500 mt-8"
       >
         Toggle Color Blind Mode: {toggleColorBlindMode ? 'OFF' : 'ON'}
       </button>
       <hr />
-      {messages.map((msg: MessageType, index: number) => {
-        if (index === messages.length - 1) {
+      <div className="border-2 border-gray-500 p-4 w-1/2 overflow-scroll">
+        {messages.map((msg: MessageType, index: number) => {
+          if (index === messages.length - 1) {
+            return (
+              <Message
+                key={index}
+                {...msg}
+                colorBlindMode={toggleColorBlindMode}
+                elRef={lastMessageElementRef}
+              />
+            );
+          }
+
           return (
             <Message
               key={index}
               {...msg}
               colorBlindMode={toggleColorBlindMode}
-              elRef={lastMessageElementRef}
             />
           );
-        }
-
-        return (
-          <Message key={index} {...msg} colorBlindMode={toggleColorBlindMode} />
-        );
-      })}
-    </div>
+        })}
+      </div>
+    </>
   );
 }
 
