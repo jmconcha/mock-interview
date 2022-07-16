@@ -11,7 +11,7 @@ const io = new Server(server, {
 
 const PORT = 5000;
 
-const randomMessages = [
+const messages = [
   'Lorem, ipsum lol dolor.',
   'Lorem, lol ipsum.',
   'Lorem ipsum dolor lol sit amet.',
@@ -19,31 +19,45 @@ const randomMessages = [
   'Lorem, ipsum.',
   'Lorem ipsum lol dolor sit amet.',
 ];
-const messages = [];
+const colors = ['red', 'blue', 'green', 'pink'];
+const usernames = ['Lebron', 'Michael', 'Shan', 'Judith'];
 
-setInterval(() => {
-  const randNum = Math.floor(Math.random() * (randomMessages.length - 1));
-  messages.push(randomMessages[randNum]);
-
-  console.log('messages: ', messages);
-}, 1000);
+const randomMessages = [];
 
 io.on('connection', (socket) => {
   console.log('a user connected');
 
-  io.emit('chat-message', messages);
+  const intervalId = setInterval(() => {
+    randomMessages.push({
+      body: messages[getRandomNumber(0, messages.length)],
+      user: {
+        name: usernames[getRandomNumber(0, usernames.length)],
+        color: colors[getRandomNumber(0, colors.length)],
+      },
+    });
+
+    console.log('messages: ', randomMessages);
+  }, 1000);
+
+  io.emit('chat-message', randomMessages);
 
   socket.on('chat-message', (msg) => {
     console.log('message', msg);
-    messages.push(msg);
+    randomMessages.push(msg);
 
     io.emit('chat-message', msg);
   });
 
   socket.on('disconnect', () => {
+    clearInterval(intervalId);
+
     console.log('user disconnected');
   });
 });
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 server.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
