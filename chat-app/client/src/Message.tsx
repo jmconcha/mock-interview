@@ -23,6 +23,7 @@ function replaceLolWordWithEmoji(text: string) {
           style={{ width: '1.5rem', height: '1.5rem', display: 'inline-block' }}
           src={LolPng}
           alt="LOL emoji"
+          key={index}
         />
       );
     }
