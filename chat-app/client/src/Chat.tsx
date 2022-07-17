@@ -3,11 +3,14 @@ import { connect } from './socket';
 
 import Message, { MessageType } from './Message';
 import { flushSync } from 'react-dom';
+import { setConstantValue } from 'typescript';
 
 function Chat() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toggleColorBlindMode, setToggleColorBlindMode] =
     useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
+
   const connectionRef = useRef<any>(null);
   const lastMessageElementRef = useRef<any>(null);
 
@@ -31,7 +34,7 @@ function Chat() {
     connection.on('chat-message', (msg: MessageType) => {
       flushSync(() => {
         setMessages((m: MessageType[]) => [...m, msg]);
-        // scrollToLastMessage();
+        scrollToLastMessage();
       });
     });
 
@@ -42,6 +45,15 @@ function Chat() {
 
   const handleClick = () => {
     setToggleColorBlindMode((prevState) => !prevState);
+  };
+
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log('submit');
   };
 
   return (
@@ -76,6 +88,19 @@ function Chat() {
           );
         })}
       </div>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-200 mt-2 flex box-border p-2"
+      >
+        <input
+          value={value}
+          onChange={handleChange}
+          className="w-full mr-4 focus:outline-gray-400 px-2"
+        />
+        <button className="py-2 px-4 font-bold text-white bg-blue-400">
+          Send
+        </button>
+      </form>
     </div>
   );
 }
