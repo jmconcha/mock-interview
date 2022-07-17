@@ -8,7 +8,7 @@ function Chat() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [toggleColorBlindMode, setToggleColorBlindMode] =
     useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
+  const [text, setText] = useState<string>('');
 
   const connectionRef = useRef<any>(null);
   const lastMessageElementRef = useRef<any>(null);
@@ -47,13 +47,13 @@ function Chat() {
   };
 
   const handleChange = (e: any) => {
-    setValue(e.target.value);
+    setText(e.target.value);
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    const body = value.trim();
+    const body = text.trim();
 
     if (body === '') return;
 
@@ -68,7 +68,7 @@ function Chat() {
     const connection = connectionRef.current;
     connection.emit('chat-message', payload);
 
-    setValue('');
+    setText('');
   };
 
   return (
@@ -108,7 +108,7 @@ function Chat() {
         className="bg-gray-200 mt-2 flex box-border p-2"
       >
         <input
-          value={value}
+          value={text}
           onChange={handleChange}
           className="w-full mr-4 focus:outline-gray-400 px-2"
         />
