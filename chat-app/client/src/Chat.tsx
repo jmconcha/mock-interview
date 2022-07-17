@@ -53,8 +53,12 @@ function Chat() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
+    const body = value.trim();
+
+    if (body === '') return;
+
     const payload = {
-      body: value,
+      body,
       user: {
         name: 'John Doe',
         color: 'aqua',
