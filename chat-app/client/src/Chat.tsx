@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from './socket';
-
-import Message, { MessageType } from './Message';
 import { flushSync } from 'react-dom';
-import { setConstantValue } from 'typescript';
+
+import { connect } from './socket';
+import Message, { MessageType } from './Message';
 
 function Chat() {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -15,8 +14,8 @@ function Chat() {
   const lastMessageElementRef = useRef<any>(null);
 
   useEffect(() => {
-    let connection = connectionRef.current;
-    connection = connect();
+    let connection = connect();
+    connectionRef.current = connection;
 
     const scrollToLastMessage = () => {
       lastMessageElementRef.current.scrollIntoView({
@@ -53,7 +52,19 @@ function Chat() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log('submit');
+
+    const payload = {
+      body: value,
+      user: {
+        name: 'John Doe',
+        color: 'aqua',
+      },
+    };
+
+    const connection = connectionRef.current;
+    connection.emit('chat-message', payload);
+
+    setValue('');
   };
 
   return (
@@ -97,7 +108,7 @@ function Chat() {
           onChange={handleChange}
           className="w-full mr-4 focus:outline-gray-400 px-2"
         />
-        <button className="py-2 px-4 font-bold text-white bg-blue-400">
+        <button className="py-2 px-4 font-bold text-white bg-blue-400 hover:bg-blue-500">
           Send
         </button>
       </form>
