@@ -39,6 +39,7 @@ function Chat() {
 
     return () => {
       connection.disconnect();
+      connectionRef.current = null;
     };
   }, []);
 
