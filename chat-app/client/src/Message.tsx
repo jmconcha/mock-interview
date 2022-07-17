@@ -1,4 +1,5 @@
 import React from 'react';
+import LolPng from './images/lol.png';
 
 export interface MessageType {
   body: string;
@@ -11,6 +12,24 @@ export interface MessageType {
 interface MessageProps extends MessageType {
   colorBlindMode: boolean;
   elRef?: any;
+}
+
+function replaceLolWordWithEmoji(text: string) {
+  const words = text.split(' ');
+  const output = words.map((word: string, index: number) => {
+    if (word.toLowerCase() === 'lol') {
+      return (
+        <img
+          style={{ width: '1.5rem', height: '1.5rem', display: 'inline-block' }}
+          src={LolPng}
+          alt="LOL emoji"
+        />
+      );
+    }
+    return index === words.length - 1 ? word : word + ' ';
+  });
+
+  return output;
 }
 
 function Message(props: MessageProps): JSX.Element {
@@ -26,10 +45,12 @@ function Message(props: MessageProps): JSX.Element {
     fontWeight: 'bold',
   };
 
+  const words = replaceLolWordWithEmoji(body);
+
   return (
     <div className="border-b-2 border-gray-400 mb-4" ref={elRef}>
       <span style={style}>{name}</span>
-      <p>{body}</p>
+      <p>{words}</p>
     </div>
   );
 }
