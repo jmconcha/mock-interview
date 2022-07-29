@@ -1,5 +1,6 @@
 import React from 'react';
 
+import InputContext from './InputContext';
 import List from './List';
 
 function App() {
@@ -22,10 +23,12 @@ function App() {
   }, [text]);
 
   return (
-    <div>
-      <input value={text} onChange={handleChange} />
-      {keyword && <List keyword={keyword} />}
-    </div>
+    <InputContext.Provider value={{ text, setText, handleChoosenWord }}>
+      <div>
+        <input value={text} onChange={handleChange} />
+        {keyword && <List keyword={keyword} />}
+      </div>
+    </InputContext.Provider>
   );
 }
 
