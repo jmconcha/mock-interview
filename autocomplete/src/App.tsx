@@ -12,7 +12,9 @@ function App() {
     const words = text.split(' ');
     words[words.length - 1] = str;
     const newText = words.join(' ') + ' ';
+
     setText(newText);
+    inputRef.current?.focus();
   };
 
   const keyword = React.useMemo(() => {
@@ -26,7 +28,7 @@ function App() {
   return (
     <InputContext.Provider value={{ onChoosenWord: handleChoosenWord }}>
       <div>
-        <input value={text} onChange={handleChange} />
+        <input ref={inputRef} value={text} onChange={handleChange} />
         {keyword && <List keyword={keyword} />}
       </div>
     </InputContext.Provider>
