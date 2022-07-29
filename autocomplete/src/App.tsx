@@ -6,6 +6,12 @@ function App() {
   const [text, setText] = React.useState<string>('');
 
   const handleChange = (e: any) => setText(e.target.value);
+  const handleChoosenWord = (text: string): void => {
+    const words = text.split('');
+    words[words.length - 1] = text;
+    const newText = words.join(' ') + ' ';
+    setText(newText);
+  };
 
   const keyword = React.useMemo(() => {
     const trimmedText = text.trim();
