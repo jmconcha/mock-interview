@@ -5,11 +5,12 @@ import List from './List';
 
 function App() {
   const [text, setText] = React.useState<string>('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleChange = (e: any) => setText(e.target.value);
-  const handleChoosenWord = (text: string): void => {
-    const words = text.split('');
-    words[words.length - 1] = text;
+  const handleChoosenWord = (str: string): void => {
+    const words = text.split(' ');
+    words[words.length - 1] = str;
     const newText = words.join(' ') + ' ';
     setText(newText);
   };
