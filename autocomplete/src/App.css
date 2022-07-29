@@ -1,0 +1,14 @@
+.word-list {
+  list-style: none;
+  padding: 0;
+}
+
+.word-list li {
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+}
+
+.word-list li:hover {
+  background-color: #ddd;
+}

@@ -18,7 +18,7 @@ function List({ keyword }: { keyword: string }): JSX.Element {
   }, [keyword]);
 
   return (
-    <ol style={{ listStyleType: 'none', padding: 0 }}>
+    <ol className="word-list">
       {wordList.map((word) => (
         <ListItem key={word} word={word} />
       ))}
