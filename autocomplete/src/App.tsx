@@ -7,10 +7,18 @@ function App() {
 
   const handleChange = (e: any) => setText(e.target.value);
 
+  const keyword = React.useMemo(() => {
+    const trimmedText = text.trim();
+    if (trimmedText === '') return '';
+
+    const words = trimmedText.split(' ');
+    return words[words.length - 1];
+  }, [text]);
+
   return (
     <div>
       <input value={text} onChange={handleChange} />
-      {text && <List keyword={text} />}
+      {keyword && <List keyword={keyword} />}
     </div>
   );
 }
