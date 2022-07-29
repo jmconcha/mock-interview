@@ -23,7 +23,7 @@ function App() {
   }, [text]);
 
   return (
-    <InputContext.Provider value={{ text, setText, handleChoosenWord }}>
+    <InputContext.Provider value={{ onChoosenWord: handleChoosenWord }}>
       <div>
         <input value={text} onChange={handleChange} />
         {keyword && <List keyword={keyword} />}
