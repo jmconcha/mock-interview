@@ -5,15 +5,20 @@ import List from './List';
 
 function App() {
   const [text, setText] = React.useState<string>('');
+  const [suggest, setSuggest] = React.useState<boolean>(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: any) => setText(e.target.value);
+  const handleChange = (e: any) => {
+    setText(e.target.value);
+    setSuggest(true);
+  };
   const handleChoosenWord = (str: string): void => {
     const words = text.split(' ');
     words[words.length - 1] = str;
     const newText = words.join(' ') + ' ';
 
     setText(newText);
+    setSuggest(false);
     inputRef.current?.focus();
   };
 
@@ -29,7 +34,7 @@ function App() {
     <InputContext.Provider value={{ onChoosenWord: handleChoosenWord }}>
       <div>
         <input ref={inputRef} value={text} onChange={handleChange} />
-        {keyword && <List keyword={keyword} />}
+        {suggest && keyword && <List keyword={keyword} />}
       </div>
     </InputContext.Provider>
   );
