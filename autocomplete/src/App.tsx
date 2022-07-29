@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useTransition } from 'react';
 
 import InputContext from './InputContext';
 import List from './List';
@@ -7,10 +7,14 @@ function App() {
   const [text, setText] = React.useState<string>('');
   const [suggest, setSuggest] = React.useState<boolean>(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [isPending, startTransition] = React.useTransition();
 
   const handleChange = (e: any) => {
     setText(e.target.value);
-    setSuggest(true);
+
+    startTransition(() => {
+      setSuggest(true);
+    });
   };
   const handleChoosenWord = (str: string): void => {
     const words = text.split(' ');
@@ -30,11 +34,24 @@ function App() {
     return words[words.length - 1];
   }, [text]);
 
+  let list = null;
+  if (suggest && keyword) {
+    list = <List keyword={keyword} />;
+  }
+  if (isPending) {
+    list = (
+      <>
+        <br />
+        loading...
+      </>
+    );
+  }
+
   return (
     <InputContext.Provider value={{ onChoosenWord: handleChoosenWord }}>
       <div>
         <input ref={inputRef} value={text} onChange={handleChange} />
-        {suggest && keyword && <List keyword={keyword} />}
+        {list}
       </div>
     </InputContext.Provider>
   );
